@@ -36,7 +36,7 @@
             </a> 
         </div>
 
-        <div class="nav-sidebar" id="navSidebar">
+        <!-- <div class="nav-sidebar" id="navSidebar">
     <div class="sidebar-header">
         <div class="logo" style="color: white;">
             <i class="fas fa-store"></i> SAUDAGAR
@@ -48,9 +48,9 @@
         <li style="padding: 15px 0; border-bottom: 1px solid #333;"><a href="#menu" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;"><i class="fas fa-utensils"></i> Daftar Menu</a></li>
         <li style="padding: 15px 0; border-bottom: 1px solid #333;"><a href="#" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;"><i class="fas fa-history"></i> Riwayat Pesanan</a></li>
     </ul>
-</div>
+</div> -->
     </nav>
-
+<!--< -->
     <header class="hero">
     <div class="hero-content">
         <h1>Gigitan Pertamaaaaa ini, <span>Cinta Selamanya.</span></h1>
@@ -159,6 +159,42 @@
     const displayTitle = document.getElementById('Display-title');
     const menuContainer = document.getElementById('Menu-container');
 
+    // Deklarasi elemen modal
+    const modal = document.getElementById('item-detail-modal');
+    const modalQtyInput = document.getElementById('modal-qty-input');
+
+    // Fungsi Buka Modal
+    window.openModal = function(nama, harga, gambar, deskripsi) {
+        document.getElementById('modal-name').innerText = nama;
+        document.getElementById('modal-price').innerText = `Rp ${harga.toLocaleString()}`;
+        document.getElementById('modal-img').src = gambar;
+        document.getElementById('modal-desc').innerText = deskripsi;
+        modalQtyInput.value = 1; // Reset qty jadi 1 tiap buka modal
+        
+        // Simpan data sementara di tombol konfirmasi
+        const confirmBtn = document.getElementById('modalAddToCartBtn');
+        confirmBtn.onclick = function() {
+            tambahKeKeranjangOtomatis(nama, harga, gambar, parseInt(modalQtyInput.value));
+            modal.style.display = 'none';
+        };
+
+        modal.style.display = 'flex';
+    };
+
+    // Logika Tombol + dan - di dalam Modal
+    document.getElementById('modal-plus').onclick = () => {
+        modalQtyInput.value = parseInt(modalQtyInput.value) + 1;
+    };
+    document.getElementById('modal-minus').onclick = () => {
+        if (parseInt(modalQtyInput.value) > 1) {
+            modalQtyInput.value = parseInt(modalQtyInput.value) - 1;
+        }
+    };
+
+// Tutup Modal
+    document.getElementById('closeModal').onclick = () => modal.style.display = 'none';
+    window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; };
+
     // --- 3. FUNGSI RENDER (Gambar Menu) ---
     // Fungsi ini dipanggil setiap kali ada perubahan filter/search
     window.tampilkanMenu = function(data) {
@@ -178,8 +214,8 @@
                         <input type="text" value="1" class="qty-input" readonly>
                         <button type="button" class="qty-btn" onclick="ubahQtyManual(this, 1)">+</button>
                     </div>
-                    <button class="buy-btn" onclick="tambahKeKeranjangOtomatis('${item.nama}', ${item.harga}, '${item.image}', this)">
-                        Tambah ke Keranjang
+                    <button class="buy-btn" onclick="openModal('${item.nama}', ${item.harga}, '${item.image}', '${item.desc}')">
+                        Lihat Detail
                     </button>
                 </div>
             `;
@@ -195,10 +231,7 @@
     };
 
     // --- Letakkan showToast di dalam tambahKeKeranjangOtomatis agar berfungsi ---
-window.tambahKeKeranjangOtomatis = function(nama, harga, gambar, btn) {
-    const qtyInput = btn.parentElement.querySelector('.qty-input');
-    const jumlah = parseInt(qtyInput.value);
-    
+window.tambahKeKeranjangOtomatis = function(nama, harga, gambar, jumlah) {
     const existingItem = cart.find(item => item.name === nama);
     if (existingItem) {
         existingItem.quantity += jumlah;
@@ -207,9 +240,7 @@ window.tambahKeKeranjangOtomatis = function(nama, harga, gambar, btn) {
     }
 
     updateCartUI();
-    openCart();
-    showToast(); // <--- TAMBAHKAN INI
-    qtyInput.value = 1;
+    showToast();
 };
 
 // --- Fungsi showToast yang benar ---
@@ -364,5 +395,29 @@ inputPencarian.addEventListener('input', function() {
 
     <div id="toastNotification" class="toast">Berhasil ditambahkan ke keranjang!</div>
 
+
+    <div id="item-detail-modal" class="modal">
+        <div class="modal-container">
+            <button class="close-icon" id="closeModal">&times;</button>
+            <div class="modal-content">
+                <img src="" id="modal-img" alt="Product Image">
+                <div class="product-info">
+                    <h3 id="modal-name">Nama Produk</h3>
+                    <p id="modal-desc">Deskripsi produk akan muncul disini.</p>
+                    <div class="modal-price" id="modal-price">IDR 0</div>
+
+                    <div class="modal-qty-control">
+                        <button type="button" class="btn-qty" id="modal-minus">-</button>
+                        <input type="text" value="1" id="modal-qty-input" readonly>
+                        <button type="button" class="btn-qty" id="modal-plus">+</button>
+                    </div>
+                    <button class="modal-add-btn" id="modalAddToCartBtn">
+                        <i class="fas fa-shopping-cart"></i> Tambahkan ke keranjang
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </body>
 </html>
