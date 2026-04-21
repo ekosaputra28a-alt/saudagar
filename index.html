@@ -51,13 +51,28 @@
 </div>
     </nav>
 <!--< -->
-    <header class="hero">
-    <div class="hero-content">
-        <h1>Gigitan Pertamaaaaa ini, <span>Cinta Selamanya.</span></h1>
-        <p>Burger premium dengan daging sapi asli dan saus rahasia yang bikin nagih.</p>
-        <a href="#menu" class="cta-button">Pesan Sekarang</a>
-    </div>
-</header>
+    <header class="promo-slider">
+        <div class="slider-wrapper">
+            <div class="slide active" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1550547660-d9450f859349?w=1200');">
+                <div class="slide-content">
+                    <span class="promo-tag">Limited Offer!</span>
+                    <h1>Beli 1 Gratis 1 <span>Classic Cheese</span></h1>
+                    <p>Khusus pemesanan hari ini melalui WhatsApp</p>
+                    <a href="#menu" class="cta-button">Ambil Promo</a>
+                </div>
+            </div>
+            <div class="slide" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1200');">
+                <div class="slide-content">
+                    <span class="promo-tag">Intern Special</span>
+                    <h1>Diskon 20% <span>Semua Pizza</span></h1>
+                    <p>Apresiasi buat kamu pejuang kerja hari ini!</p>
+                    <a href="#menu" class="cta-button">Cek Menu</a>
+                </div>
+            </div>
+        </div>
+        <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
+    </header>
 
 <section class="categories-section">
     <div class="category-container" style="display: flex; gap: 20px; overflow-x: auto; padding: 20px; justify-content: center;">
@@ -146,6 +161,49 @@
         { id: 4, nama: "Pepperoni Feast", harga: 85000, kategori: "pizza", badge: "Hot Deal", image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500", desc: "Irisan pepperoni sapi melimpah." },
         { id: 5, nama: "Classic Crispy Chicken", harga: 35000, kategori: "chicken", badge: "Must Try", image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=500", desc: "Ayam goreng juicy di dalam." }
     ];
+
+    const slides = document.querySelectorAll('.slide');
+    const nextBtn = document.querySelector('.next');
+    const prevBtn = document.querySelector('.prev');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function showSlide(n) {
+        // Hapus class active dari slide yang sekarang
+        slides[currentSlide].classList.remove('active');
+        // Hitung index slide berikutnya
+        currentSlide = (n + slides.length) % slides.length;
+        // Tambah class active ke slide baru
+        slides[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    // Tombol Manual
+    if(nextBtn && prevBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            restartTimer();
+        });
+        prevBtn.addEventListener('click', () => {
+            showSlide(currentSlide - 1);
+            restartTimer();
+        });
+    }
+
+    // Jalankan Otomatis 5 detik
+    function startTimer() {
+        slideInterval = setInterval(nextSlide, 5000);
+    }
+
+    function restartTimer() {
+        clearInterval(slideInterval);
+        startTimer();
+    }
+
+    startTimer();
 
     let cart = [];
 
