@@ -30,6 +30,9 @@
                 <a href="#" class="icon-btn" id="btnCari"><i class="fas fa-search"></i></a>
             </div>
             <a href="#" class="icon-btn"><i class="fas fa-user"></i></a>
+            <button id="darkModeToggle" class="icon-btn">
+                <i class="fas fa-moon"></i>
+            </button>
             <a href="#" class="icon-btn cart-btn">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-badge">0</span>
@@ -204,6 +207,30 @@
     }
 
     startTimer();
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const icon = darkModeToggle.querySelector('i');
+
+    // 1. Cek apakah user sebelumnya sudah set dark mode
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark-mode');
+        icon.classList.replace('fa-moon', 'fa-sun'); // Ganti icon jadi matahari
+    }
+
+    // 2. Event Klik
+    darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        
+        // Update Icon dan Simpan Preference
+        if (body.classList.contains('dark-mode')) {
+            icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'light');
+        }
+    });
 
     let cart = [];
 

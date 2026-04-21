@@ -593,6 +593,47 @@
     background: #fff;
 }
 
+/* Warna Default (Light Mode) */
+:root {
+    --bg-color: #FDF4EB;
+    --card-bg: #ffffff;
+    --text-color: #1a1a1a;
+    --nav-bg: #1a1a1a;
+    --primary: #ffc107;
+    --secondary: #e74c3c;
+    --footer-bg: #1a1a1a;
+}
+
+/* Warna Saat Dark Mode */
+body.dark-mode {
+    --bg-color: #121212;      /* Hitam pekat */
+    --card-bg: #1e1e1e;      /* Abu-abu gelap untuk kartu */
+    --text-color: #f4f4f4;   /* Teks jadi putih/terang */
+    --nav-bg: #000000;
+    --footer-bg: #000000;
+}
+
+/* Terapkan variabel ke elemen-elemen utama */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s; /* Biar transisinya smooth */
+}
+
+.product-card {
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+.category-icon {
+    background-color: var(--card-bg); /* Biar ikon kategori ikut berubah */
+}
+
+.modal-container {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
 .total-price {
     font-size: 1.1rem;
     color: #2f3542;
