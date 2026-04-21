@@ -170,6 +170,9 @@
         document.getElementById('modal-img').src = gambar;
         document.getElementById('modal-desc').innerText = deskripsi;
         modalQtyInput.value = 1; // Reset qty jadi 1 tiap buka modal
+
+        modal.classList.add('active');
+        modal.style.display ='flex';
         
         // Simpan data sementara di tombol konfirmasi
         const confirmBtn = document.getElementById('modalAddToCartBtn');
@@ -325,6 +328,18 @@ window.hapusSatuItem = function(index) {
         cartSidebar.classList.remove('active');
         overlay.style.display = 'none';
     };
+
+    const tutupModal = () => {
+        modal.classList.remove('active');
+        setTimeout(() =>  {
+            if (!modal.classList.contains('active')) {
+                modal.style.display = 'none';
+            }
+        }, 300);
+    };
+
+    document.getElementById('closeModal').onclick = tutupModal;
+    window.onclick = (e) => { if (e.target == modal) tutupModal(); };
 
     // Filter per kategori
     window.filterMenu = function(category) {
