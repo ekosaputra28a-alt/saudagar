@@ -198,29 +198,26 @@
     // --- 3. FUNGSI RENDER (Gambar Menu) ---
     // Fungsi ini dipanggil setiap kali ada perubahan filter/search
     window.tampilkanMenu = function(data) {
-        if (!menuContainer) return;
-        menuContainer.innerHTML = ""; 
-        
-        data.forEach(item => {
-            menuContainer.innerHTML += `
-                <div class="product-card">
-                    ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
-                    <img src="${item.image}" alt="${item.nama}">
+    if (!menuContainer) return;
+    menuContainer.innerHTML = ""; 
+    
+    data.forEach(item => {
+        menuContainer.innerHTML += `
+            <div class="product-card">
+                ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
+                <img src="${item.image}" alt="${item.nama}">
+                <div class="product-info-card">
                     <h3>${item.nama}</h3>
-                    <p class="desc">${item.desc}</p>
                     <p class="price">Rp ${item.harga.toLocaleString()}</p>
-                    <div class="qty-control">
-                        <button type="button" class="qty-btn" onclick="ubahQtyManual(this, -1)">-</button>
-                        <input type="text" value="1" class="qty-input" readonly>
-                        <button type="button" class="qty-btn" onclick="ubahQtyManual(this, 1)">+</button>
-                    </div>
+                    
                     <button class="buy-btn" onclick="openModal('${item.nama}', ${item.harga}, '${item.image}', '${item.desc}')">
-                        Lihat Detail
+                        <i class="fas fa-eye"></i> Lihat Detail
                     </button>
                 </div>
-            `;
-        });
-    };
+            </div>
+        `;
+    });
+};
 
     // --- 4. LOGIKA QUANTITY & KERANJANG ---
     window.ubahQtyManual = function(btn, delta) {
