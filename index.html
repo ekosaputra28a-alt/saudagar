@@ -146,13 +146,23 @@
     </div>
 
     <div class="sidebar-footer">
-        <div class="total-price" style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px">
-            <span>Total:</span>
-            <span id="cartTotal">Rp 0</span>
-        </div>
-        <button class="checkout-btn">Lanjut Bayar</button>
+    <div class="checkout-form" style="margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 10px; margin-bottom: 15px;">
+        <h4 style="margin-bottom: 10px; font-size: 0.9rem; color: #333;">Data Pengiriman</h4>
+        <input type="text" id="customerName" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;">
+        <textarea id="customerAddress" placeholder="Alamat Lengkap (Jl, No Rumah, Kelurahan)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; height: 60px;"></textarea>
+        <select id="paymentMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; background: white;">
+            <option value="Tunai">Bayar di Tempat (COD)</option>
+            <option value="Transfer">Transfer Bank</option>
+        </select>
     </div>
+
+    <div class="total-price" style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px">
+        <span>Total:</span>
+        <span id="cartTotal">Rp 0</span>
+    </div>
+    <button class="checkout-btn">Lanjut Bayar</button>
 </div>
+
 
     <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -212,13 +222,13 @@
     const body = document.body;
     const icon = darkModeToggle.querySelector('i');
 
-    // 1. Cek apakah user sebelumnya sudah set dark mode
+    
     if (localStorage.getItem('theme') === 'dark') {
         body.classList.add('dark-mode');
         icon.classList.replace('fa-moon', 'fa-sun'); // Ganti icon jadi matahari
     }
 
-    // 2. Event Klik
+
     darkModeToggle.addEventListener('click', () => {
         body.classList.toggle('dark-mode');
         
@@ -234,7 +244,7 @@
 
     let cart = [];
 
-    // --- 2. DEKLARASI ELEMEN UI ---
+ 
     const navSidebar = document.getElementById('navSidebar');
     const cartSidebar = document.getElementById('cartSidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -344,22 +354,84 @@ window.showToast = function() {
         return;
     }
 
+    // 1. Ambil data dari Form
+    const nama = document.getElementById('customerName').value;
+    const alamat = document.getElementById('customerAddress').value;
+    const metode = document.getElementById('paymentMethod').value;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxSzus9rfffV5_EhDGTfafytgLHOlr2aTQoTC3yZ46wrHlE0BjxeMqKwxv5vCZINGVdoA/exechttps://script.google.com/macros/s/AKfycbz1KYtQ-CglwsyZJAImGpTSBS-PMPpEz4aSn2UpULXMgrVMlKudPSPoFUWd1YAWUfX3/exec'; // <-- GANTI INI
+
+    if (!nama || !alamat) {
+        alert("Mohon isi nama dan alamat untuk pengiriman!");
+        return;
+    }
+
+    // 2. Siapkan data untuk Google Sheets
+    const dataPesanan = {
+        customer: nama,
+        address: alamat,
+        payment: metode,
+        items: cart.map(item => `${item.name} (${item.quantity}x)`).join(", "),
+        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    };
+
+    // Efek Loading
+    this.innerText = "Memproses Pesanan...";
+    this.disabled = true;
+
+    // 3. KIRIM KE GOOGLE SHEETS
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors', 
+        cache: 'no-cache',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataPesanan)
+    })
+    .then(() => {
+        // 4. LANJUT KIRIM KE WHATSAPP (Setelah masuk database)
+        let nomorWA = "6285758914087"; 
+        let pesanWA = `*PESANAN BARU (BurgerQu)*\n\n` +
+                      `Nama: ${nama}\n` +
+                      `Alamat: ${alamat}\n` +
+                      `Metode: ${metode}\n\n` +
+                      `Detail Pesanan:\n${dataPesanan.items}\n\n` +
+                      `*Total: Rp ${dataPesanan.total.toLocaleString()}*`;
+        
+        window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanWA)}`, '_blank');
+
+        // Reset Keranjang & Form
+        cart = [];
+        updateCartUI();
+        document.getElementById('customerName').value = '';
+        document.getElementById('customerAddress').value = '';
+        
+        alert("Pesanan terkirim! Admin akan segera menghubungi via WA.");
+        this.innerText = "Lanjut Bayar";
+        this.disabled = false;
+    })
+    .catch(error => {
+        alert("Waduh, ada masalah teknis. Coba lagi ya!");
+        this.innerText = "Lanjut Bayar";
+        this.disabled = false;
+    });
+});
+    
+
     // Perhatikan: namanya nomorWA (pakai r)
-    let nomorWA = "6285758914087"; 
-    let pesan = "Halo BurgerQu! Saya mau pesan:\n\n";
-    let totalHarga = 0;
+    //let nomorWA = "6285758914087"; 
+    //let pesan = "Halo BurgerQu! Saya mau pesan:\n\n";
+    //let totalHarga = 0;
 
-    cart.forEach(item => {
-        pesan += `- ${item.name} (${item.quantity}x) = Rp ${(item.price * item.quantity).toLocaleString()}\n`;
-        totalHarga += item.price * item.quantity;
-    });
+    //cart.forEach(item => {
+        //pesan += `- ${item.name} (${item.quantity}x) = Rp ${(item.price * item.quantity).toLocaleString()}\n`;
+        //totalHarga += item.price * item.quantity;
+    //});
 
-    pesan += `\n*Total Tagihan: Rp ${totalHarga.toLocaleString()}*`;
+    //pesan += `\n*Total Tagihan: Rp ${totalHarga.toLocaleString()}*`;
 
-    let urlWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
+    //let urlWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
 
-    window.open(urlWA, '_blank');
-    });
+    //window.open(urlWA, '_blank');
+    //});
 
 function updateCartUI() {
     const cartItemsContainer = document.getElementById('cartItems');
