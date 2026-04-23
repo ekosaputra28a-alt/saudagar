@@ -129,9 +129,6 @@
             <p>&copy; 2026 BurgerQu Project. Dibuat dengan semangat belajar!</p>
         </div>
     </footer>
-
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
     
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -145,16 +142,53 @@
         <p class="empty-msg">Keranjang masih kosong nih...</p>
     </div>
 
-    <div class="sidebar-footer">
     <div class="checkout-form" style="margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 10px; margin-bottom: 15px;">
-        <h4 style="margin-bottom: 10px; font-size: 0.9rem; color: #333;">Data Pengiriman</h4>
-        <input type="text" id="customerName" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;">
-        <textarea id="customerAddress" placeholder="Alamat Lengkap (Jl, No Rumah, Kelurahan)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; height: 60px;"></textarea>
-        <select id="paymentMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; background: white;">
+    <h4 style="margin-bottom: 10px; font-size: 0.9rem; color: #333;">Data Pengiriman</h4>
+    
+    <input type="text" id="customerName" placeholder="Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;">
+
+    <div class="metode-container">
+    <label class="metode-label">Metode:</label>
+
+    <div class="radio-group modern-radio">
+        
+        <label class="radio-card">
+            <input type="radio" name="metode" value="Makan di Tempat" checked onclick="toggleAlamat(false)">
+            <div class="radio-content">
+                <i class="fas fa-utensils"></i>
+                <span>Makan di Sini</span>
+            </div>
+        </label>
+
+        <label class="radio-card">
+            <input type="radio" name="metode" value="Delivery" onclick="toggleAlamat(true)">
+            <div class="radio-content">
+                <i class="fas fa-motorcycle"></i>
+                <span>Delivery</span>
+            </div>
+        </label>
+
+    </div>
+</div>
+
+    <div class="checkout-form">
+
+    <div id="wrapperAlamat" class="alamat-wrapper" style="display: none;">
+        <textarea 
+            id="customerAddress" 
+            placeholder="Alamat Lengkap (Jl, No Rumah, Kelurahan)">
+        </textarea>
+    </div>
+
+    <div class="payment-wrapper">
+        <label for="paymentMethod">Metode Pembayaran</label>
+        <select id="paymentMethod">
             <option value="Tunai">Bayar di Tempat (COD)</option>
             <option value="Transfer">Transfer Bank</option>
         </select>
     </div>
+
+</div>
 
     <div class="total-price" style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px">
         <span>Total:</span>
@@ -166,13 +200,23 @@
 
     <script>
             document.addEventListener('DOMContentLoaded', function() {
+
+    const savedNama = localStorage.getItem('burgerQu_nama');
+        const savedAlamat = localStorage.getItem('burgerQu_alamat');
+
+        if (savedNama) {
+            document.getElementById('customerName').value = savedNama;
+        }
+        if (savedAlamat) {
+            document.getElementById('customerAddress').value = savedAlamat;
+        }
     // --- 1. DATA GUDANG MENU ---
     const daftarMenu = [
-        { id: 1, nama: "Classic Cheese", harga: 45000, kategori: "burger", badge: "Best Seller", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500", desc: "Double beef, cheddar cheese, fresh onion." },
-        { id: 2, nama: "Spicy Chicken", harga: 40000, kategori: "burger", badge: "", image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500", desc: "Crispy chicken thigh, jalapeno, spicy mayo." },
-        { id: 3, nama: "Caramel Macchiato", harga: 28000, kategori: "coffee", badge: "Best Seller", image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=500", desc: "Espresso premium dengan sirup caramel." },
-        { id: 4, nama: "Pepperoni Feast", harga: 85000, kategori: "pizza", badge: "Hot Deal", image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500", desc: "Irisan pepperoni sapi melimpah." },
-        { id: 5, nama: "Classic Crispy Chicken", harga: 35000, kategori: "chicken", badge: "Must Try", image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=500", desc: "Ayam goreng juicy di dalam." }
+        { id: 1, nama: "Classic Cheese", harga: 45000, kategori: "burger", badge: "Best Seller", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500", desc: "Double beef, cheddar cheese, fresh onion.", tersedia: true },
+        { id: 2, nama: "Spicy Chicken", harga: 40000, kategori: "burger", badge: "", image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500", desc: "Crispy chicken thigh, jalapeno, spicy mayo.", tersedia: false},
+        { id: 3, nama: "Caramel Macchiato", harga: 28000, kategori: "coffee", badge: "Best Seller", image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=500", desc: "Espresso premium dengan sirup caramel.", tersedia: false },
+        { id: 4, nama: "Pepperoni Feast", harga: 85000, kategori: "pizza", badge: "Hot Deal", image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500", desc: "Irisan pepperoni sapi melimpah.", tersedia: true},
+        { id: 5, nama: "Classic Crispy Chicken", harga: 35000, kategori: "chicken", badge: "Must Try", image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=500", desc: "Ayam goreng juicy di dalam.", tersedia: true }
     ];
 
     const slides = document.querySelectorAll('.slide');
@@ -242,7 +286,8 @@
         }
     });
 
-    let cart = [];
+    // Mengambil data keranjang dari memori, kalau kosong baru set jadi []
+let cart = JSON.parse(localStorage.getItem('keranjangKu')) || [];
 
  
     const navSidebar = document.getElementById('navSidebar');
@@ -300,22 +345,29 @@
     menuContainer.innerHTML = ""; 
     
     data.forEach(item => {
+        // Logika Tombol: Jika tersedia tampilkan tombol asli, jika tidak tampilkan tombol mati
+        const tombolBeli = item.tersedia 
+            ? `<button class="buy-btn" onclick="openModal('${item.nama}', ${item.harga}, '${item.image}', '${item.desc}')">
+                  <i class="fas fa-eye"></i> Lihat Detail
+               </button>`
+            : `<button class="buy-btn disabled" style="background: #ccc; cursor: not-allowed;" disabled>
+                  <i class="fas fa-times-circle"></i> Stok Habis
+               </button>`;
+
         menuContainer.innerHTML += `
-            <div class="product-card">
+            <div class="product-card ${item.tersedia ? '' : 'out-of-stock'}">
                 ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
-                <img src="${item.image}" alt="${item.nama}">
+                <img src="${item.image}" alt="${item.nama}" style="${item.tersedia ? '' : 'filter: grayscale(1); opacity: 0.6;'}">
                 <div class="product-info-card">
                     <h3>${item.nama}</h3>
                     <p class="price">Rp ${item.harga.toLocaleString()}</p>
-                    
-                    <button class="buy-btn" onclick="openModal('${item.nama}', ${item.harga}, '${item.image}', '${item.desc}')">
-                        <i class="fas fa-eye"></i> Lihat Detail
-                    </button>
+                    ${tombolBeli}
                 </div>
             </div>
         `;
     });
 };
+        
 
     // --- 4. LOGIKA QUANTITY & KERANJANG ---
     window.ubahQtyManual = function(btn, delta) {
@@ -354,22 +406,33 @@ window.showToast = function() {
         return;
     }
 
-    // 1. Ambil data dari Form
+
     const nama = document.getElementById('customerName').value;
-    const alamat = document.getElementById('customerAddress').value;
-    const metode = document.getElementById('paymentMethod').value;
+    const metodeAmbil = document.querySelector('input[name="metode"]:checked').value; // Cek Radio Button
+    const alamatInput = document.getElementById('customerAddress').value;
+    const metodeBayar = document.getElementById('paymentMethod').value;
     const scriptURL = 'https://script.google.com/macros/s/AKfycby2JZdYPdU5Gbm5ElLFNkOwlXGy0m1FIRbFTVTbSrjiwhXdlNSXLK0oNt9VxpmogPSl/exec'; // <-- GANTI INI
 
-    if (!nama || !alamat) {
-        alert("Mohon isi nama dan alamat untuk pengiriman!");
-        return;
-    }
+    const metodePengiriman = document.querySelector('input[name="metode"]:checked').value;
 
-    // 2. Siapkan data untuk Google Sheets
+    const alamatFinal = (metodeAmbil === "Makan di Tempat") ? "Makan di Sini" : alamatInput;
+
+if (!nama) {
+    alert("Nama wajib diisi!");
+    return;
+}
+
+// hanya cek alamat kalau delivery
+if (metodePengiriman === "Delivery" && !alamatInput) {
+    alert("Mohon isi alamat untuk pengiriman!");
+    return;
+}
+
+
     const dataPesanan = {
         customer: nama,
-        address: alamat,
-        payment: metode,
+        address: alamatFinal,
+        payment: metodeBayar,
         items: cart.map(item => `${item.name} (${item.quantity}x)`).join(", "),
         total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
     };
@@ -387,14 +450,23 @@ window.showToast = function() {
         body: JSON.stringify(dataPesanan)
     })
     .then(() => {
+
+        localStorage.setItem('burgerQu_nama', nama);
+        
+        // Simpan alamat hanya jika metodenya Delivery (biar nggak nyimpen tulisan "Makan di Sini")
+        if (metodeAmbil === "Delivery") {
+            localStorage.setItem('burgerQu_alamat', alamatInput);
+        }
+
+
         // 4. LANJUT KIRIM KE WHATSAPP (Setelah masuk database)
         let nomorWA = "6285758914087"; 
         let pesanWA = `*PESANAN BARU (BurgerQu)*\n\n` +
-                      `Nama: ${nama}\n` +
-                      `Alamat: ${alamat}\n` +
-                      `Metode: ${metode}\n\n` +
-                      `Detail Pesanan:\n${dataPesanan.items}\n\n` +
-                      `*Total: Rp ${dataPesanan.total.toLocaleString()}*`;
+              `Nama: ${nama}\n` +
+              `Alamat: ${alamatFinal}\n` +
+              `Metode: ${metodePengiriman}\n\n` +
+              `Detail Pesanan:\n${dataPesanan.items}\n\n` +
+              `*Total: Rp ${dataPesanan.total.toLocaleString()}*`;
         
         window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanWA)}`, '_blank');
 
@@ -414,6 +486,8 @@ window.showToast = function() {
         this.disabled = false;
     });
 });
+
+
     
 
     // Perhatikan: namanya nomorWA (pakai r)
@@ -461,6 +535,8 @@ function updateCartUI() {
                 </button>
             </div>
         `;
+
+        localStorage.setItem('keranjangKu', JSON.stringify(cart));
     });
     // --- AKHIR LOOP ---
 
@@ -496,7 +572,7 @@ window.hapusSatuItem = function(index) {
     };
 
     document.getElementById('closeModal').onclick = tutupModal;
-    window.onclick = (e) => { if (e.target == modal) tutupModal(); };
+    
 
     // Filter per kategori
     window.filterMenu = function(category) {
@@ -558,6 +634,29 @@ inputPencarian.addEventListener('input', function() {
     tampilkanMenu(daftarMenu);
     updateCartUI();
 });
+
+window.toggleAlamat = function(show) {
+    const wrapper = document.getElementById('wrapperAlamat');
+    const inputAlamat = document.getElementById('customerAddress');
+    
+    if (show) {
+        wrapper.style.display = 'block';
+
+        // 🔥 Paksa render ulang placeholder
+        inputAlamat.value = "";
+        inputAlamat.placeholder = "Alamat Lengkap (Jl, No Rumah, Kelurahan)";
+        
+        // Trick kecil biar browser refresh UI
+        setTimeout(() => {
+            inputAlamat.focus();
+            inputAlamat.blur();
+        }, 50);
+
+    } else {
+        wrapper.style.display = 'none';
+        inputAlamat.value = "";
+    }
+}
 
 
     </script>
