@@ -11,15 +11,19 @@
     
     <nav class="navbar">
         <div class="nav-left">
-            <button class="hamburger-btn">
-                <i class="fas fa-bars"></i>
-                <span class="menu-text">Menu</span>
-            </button>
-        </div>
+            <button class="hamburger-btn" id="openNav">
+            <div class="burger-lines">
+                <span class="line-1"></span>
+                <span class="line-2"></span>
+                <span class="line-3"></span>
+            </div>
+            <span class="menu-text">Menu</span>
+        </button>
+    </div>
 
         <div class="nav-center">
             <div class="logo">
-                <i class="fas fa-store"></i> SAUDAGAR
+                <i class=""></i> KELIMANA
             </div>
         </div>
 
@@ -34,7 +38,7 @@
                 <i class="fas fa-moon"></i>
             </button>
             <a href="#" class="icon-btn cart-btn">
-                <i class="fas fa-shopping-cart"></i>
+                <i class="fa-notdog-duo fa-solid fa-cart-shopping"></i>
                 <span class="cart-badge">0</span>
             </a> 
         </div>
@@ -44,7 +48,8 @@
         <div class="logo" style="color: white;">
             <i class="fas fa-store"></i> SAUDAGAR
         </div>
-        <button class="close-sidebar" id="closeNav" style="color: white; background: none; border: none; font-size: 2rem; cursor: pointer;">&times;</button>
+        <button class="close-sidebar" id="closeNav">
+        <i class="fa-solid fa-xmark"></i></button>
     </div>
     
     <ul style="list-style: none; margin-top: 30px; padding: 0;">
@@ -151,7 +156,9 @@
 <div class="cart-sidebar" id="cartSidebar">
     <div class="sidebar-header">
         <h3>Keranjang Belanja</h3>
-        <button class="close-sidebar" id="closeSidebar">&times;</button>
+        <button class="close-sidebar" id="closeSidebar">
+    <i class="fa-solid fa-xmark"></i>
+    </button>
     </div>
     
     <div class="sidebar-content" id="cartItems">
@@ -700,7 +707,9 @@ window.toggleAlamat = function(show) {
 
     <div id="item-detail-modal" class="modal">
         <div class="modal-container">
-            <button class="close-icon" id="closeModal">&times;</button>
+            <button class="close-icon" id="closeModal">
+                <i class="fa-regular fa-xmark"></i>
+            </button>
             <div class="modal-content">
                 <img src="" id="modal-img" alt="Product Image">
                 <div class="product-info">

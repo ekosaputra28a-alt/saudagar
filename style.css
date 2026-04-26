@@ -34,21 +34,25 @@
 }
 
 .hamburger-btn {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 193, 7, 0.5); /* Warna emas transparan */
     color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 8px 18px;
+    border-radius: 50px; /* Bikin Kapsul */
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     transition: 0.3s;
 }
 
 .hamburger-btn:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: #ffc107;
+    color: #1a1a1a;
+    transform: translateY(-2px);
 }
 
 .nav-center .logo {
@@ -159,7 +163,39 @@
 .btn-qty { background: #ffc107; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
 #modal-qty-input { width: 40px; text-align: center; border: 1px solid #ddd; }
 .modal-add-btn { background: #ffc107; border: none; padding: 12px 20px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
-.close-icon { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; background: none; border: none; }
+#closeModal { position: absolute; right: 20px; top: 15px; cursor: pointer; background: #f1f1f1; border: none; }
+.close-icon i {
+    font-size: 1.5rem !important; /* Ganti ke 1.5rem atau 20px biar kelihatan jelas */
+    color: #333;
+    font-weight: 900; /* Biar garis x-nya lebih tegas */
+}
+
+
+#closeNav {
+    all: unset; 
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999 !important;
+}
+
+/* Kita tembak Ikon di dalamnya */
+#closeNav i {
+    font-size: 2rem !important; /* UKURAN RAKSASA - silakan ubah angkanya di sini */
+    color: #ffffff !important;  /* Warna emas */
+    -webkit-text-stroke: 1px black; /* Opsional: kasih garis pinggir hitam biar jelas */
+    transition: 0.3s;
+}
+
+#closeNav:hover i {
+    color: #ffc107 !important;
+    transform: scale(1.2);
+}
+
 
 .cart-item {
     background: var(--card-bg);
@@ -358,6 +394,39 @@
 
 .product-card:hover {
     transform: translateY(-5px);
+}
+
+/* Container garis-garisnya */
+.burger-lines {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20px;   /* Lebar garis */
+    height: 14px;  /* Tinggi tumpukan garis */
+}
+
+/* Ini adalah batang garisnya */
+.burger-lines span {
+    display: block;
+    height: 2px;
+    background-color: #ffc107; /* Warna Emas Saudagar */
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+/* Variasi panjang biar estetik (opsional) */
+.burger-lines span:nth-child(2) {
+    width: 70%; /* Garis tengah lebih pendek */
+}
+
+.burger-lines span:nth-child(3) {
+    width: 90%;
+}
+
+/* Saat tombol di-hover, semua garis jadi penuh */
+.hamburger-btn:hover .burger-lines span {
+    width: 100%;
+    background-color: #1a1a1a; /* Jadi hitam kalau bg-nya jadi emas */
 }
 
 .buy-btn {
@@ -792,6 +861,7 @@ body {
     justify-content: center;
     border: none;
     font-weight: bold;
+    cursor: pointer;
 }
 
 #closeSidebar:hover {
@@ -909,7 +979,7 @@ body {
     color: #1a1a1a !important;
 }
 
-/* Hover effect */
+
 .radio-content:hover {
     transform: translateY(-3px);
 }
