@@ -46,10 +46,26 @@
         </div>
         <button class="close-sidebar" id="closeNav" style="color: white; background: none; border: none; font-size: 2rem; cursor: pointer;">&times;</button>
     </div>
+    
     <ul style="list-style: none; margin-top: 30px; padding: 0;">
-        <li style="padding: 15px 0; border-bottom: 1px solid #333;"><a href="#" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;"><i class="fas fa-home"></i> Home</a></li>
-        <li style="padding: 15px 0; border-bottom: 1px solid #333;"><a href="#menu" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;"><i class="fas fa-utensils"></i> Daftar Menu</a></li>
-        <li style="padding: 15px 0; border-bottom: 1px solid #333;"><a href="#" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;"><i class="fas fa-history"></i> Riwayat Pesanan</a></li>
+        <li style="padding: 15px 0; border-bottom: 1px solid #333;">
+            <a href="#" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </li>
+        <li style="padding: 15px 0; border-bottom: 1px solid #333;">
+            <a href="#menu" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;">
+                <i class="fas fa-utensils"></i> Daftar Menu
+            </a>
+        </li>
+        <li style="padding: 15px 0; border-bottom: 1px solid #333;">
+            <a href="#" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;">
+                <i class="fas fa-history"></i> Riwayat Pesanan
+            </a>
+            <div id="daftarRiwayat" style="padding: 10px 15px; font-size: 0.75rem; color: #bbb;">
+                <p style="font-style: italic; opacity: 0.6;">Belum ada pesanan terbaru.</p>
+            </div>
+        </li>
     </ul>
 </div>
     </nav>
@@ -451,12 +467,16 @@ if (metodePengiriman === "Delivery" && !alamatInput) {
     })
     .then(() => {
 
-        localStorage.setItem('burgerQu_nama', nama);
-        
-        // Simpan alamat hanya jika metodenya Delivery (biar nggak nyimpen tulisan "Makan di Sini")
-        if (metodeAmbil === "Delivery") {
-            localStorage.setItem('burgerQu_alamat', alamatInput);
-        }
+        const riwayatLama = JSON.parse(localStorage.getItem('riwayatPesanan')) || [];
+
+        const pesananBaru = {
+            tanggal: new Date().toLocaleString('id-ID'),
+            item: dataPesanan.items,
+            total: dataPesanan.total
+        };
+
+        riwayatLama.push(pesananBaru);
+        localStorage.setItem('riwayatPesanan', JSON.stringify(riwayatLama));
 
 
         // 4. LANJUT KIRIM KE WHATSAPP (Setelah masuk database)
@@ -488,37 +508,18 @@ if (metodePengiriman === "Delivery" && !alamatInput) {
 });
 
 
-    
-
-    // Perhatikan: namanya nomorWA (pakai r)
-    //let nomorWA = "6285758914087"; 
-    //let pesan = "Halo BurgerQu! Saya mau pesan:\n\n";
-    //let totalHarga = 0;
-
-    //cart.forEach(item => {
-        //pesan += `- ${item.name} (${item.quantity}x) = Rp ${(item.price * item.quantity).toLocaleString()}\n`;
-        //totalHarga += item.price * item.quantity;
-    //});
-
-    //pesan += `\n*Total Tagihan: Rp ${totalHarga.toLocaleString()}*`;
-
-    //let urlWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
-
-    //window.open(urlWA, '_blank');
-    //});
-
 function updateCartUI() {
     const cartItemsContainer = document.getElementById('cartItems');
-    const cartTotalElement = document.getElementById('cartTotal'); // Perbaikan typo
+    const cartTotalElement = document.getElementById('cartTotal');
     const cartBadge = document.querySelector('.cart-badge');
+    const cartIcon = document.querySelector('.cart-btn');
 
-    cartItemsContainer.innerHTML = ''; // Kosongkan dulu sebelum gambar ulang
+    cartItemsContainer.innerHTML = ''; 
 
     let totalHarga = 0;
     let totalBarang = 0;
 
-    // --- MULAI LOOP ---
-    // Kita harus pakai forEach supaya semua barang di array 'cart' muncul satu per satu
+    // 1. Render item ke HTML
     cart.forEach((item, index) => {
         totalHarga += item.price * item.quantity;
         totalBarang += item.quantity;
@@ -535,18 +536,29 @@ function updateCartUI() {
                 </button>
             </div>
         `;
-
-        localStorage.setItem('keranjangKu', JSON.stringify(cart));
     });
-    // --- AKHIR LOOP ---
 
-    // Update tampilan angka (Pakai backtick ` agar variabel terbaca)
+    // 2. Tampilkan pesan jika kosong
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p class="empty-msg" style="text-align:center; padding:20px; opacity:0.6;">Keranjang masih kosong nih...</p>';
+    }
+
+    // 3. Update Text & Badge
     cartTotalElement.innerText = `Rp ${totalHarga.toLocaleString()}`;
     cartBadge.innerText = totalBarang;
 
-    // Simpan ke memori browser agar tidak hilang saat refresh
+    // 4. Jalankan Animasi Bounce
+    if (totalBarang > 0) {
+        cartIcon.classList.add('cart-bounce');
+        setTimeout(() => {
+            cartIcon.classList.remove('cart-bounce');
+        }, 300);
+    }
+
+    
     localStorage.setItem('keranjangKu', JSON.stringify(cart));
-} // KURUNG TUTUP FUNGSI HARUS DI SINI
+}
+
 
 // Fungsi hapus ditaruh di luar updateCartUI
 window.hapusSatuItem = function(index) {
@@ -554,7 +566,7 @@ window.hapusSatuItem = function(index) {
     updateCartUI(); // Panggil fungsi di atas untuk gambar ulang
 };
     // --- 5. LOGIKA NAVIGASI & FILTER ---
-    const openNav = () => { navSidebar.classList.add('active'); overlay.style.display = 'block'; };
+    const openNav = () => { navSidebar.classList.add('active'); overlay.style.display = 'block'; tampilkanRiwayat(); };
     const openCart = () => { cartSidebar.classList.add('active'); overlay.style.display = 'block'; };
     const tutupSemua = () => {
         navSidebar.classList.remove('active');
@@ -634,6 +646,28 @@ inputPencarian.addEventListener('input', function() {
     tampilkanMenu(daftarMenu);
     updateCartUI();
 });
+
+
+window.tampilkanRiwayat = function() {
+    const container = document.getElementById('daftarRiwayat');
+    const riwayat = JSON.parse(localStorage.getItem('riwayatPesanan')) || [];
+
+    if (riwayat.length === 0) {
+        container.innerHTML = '<p style="font-style: italic; opacity: 0.6;">Belum ada pesanan terbaru.</p>';
+        return;
+    }
+
+    // Ambil 3 pesanan terbaru, balik urutannya (reverse)
+    const riwayatTampil = [...riwayat].reverse().slice(0, 3);
+
+    container.innerHTML = riwayatTampil.map(p => `
+        <div style="background: #222; padding: 8px; border-radius: 5px; margin-top: 10px; border-left: 2px solid #ff4757;">
+            <div style="color: #ffc107; font-size: 0.65rem;">${p.tanggal}</div>
+            <div style="color: #fff; margin: 3px 0;">${p.item}</div>
+            <div style="color: #00ff00;">Rp ${p.total.toLocaleString()}</div>
+        </div>
+    `).join('');
+};
 
 window.toggleAlamat = function(show) {
     const wrapper = document.getElementById('wrapperAlamat');
