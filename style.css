@@ -575,7 +575,7 @@
 .cart-sidebar {
     position: fixed;
     top: 0;
-    right: -100px;
+    right: -100%;
     width: 85%;
     max-width: 360px;
     height: 100%;
