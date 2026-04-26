@@ -925,6 +925,10 @@ body {
     .cart-sidebar {
         width: 80%;
     }
+
+    .nav-sidebar {
+        width: 80%;
+    }
 }
 
 /* Perbaikan Media Query */
