@@ -25,12 +25,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 4%;
+    padding: 10px 2%;
     position: fixed; /* Sudah benar */
     top: 0;          /* Sudah benar */
     left: 0;         /* Sudah benar */
     z-index: 9999;         /* Biar gak ketutup sama gambar burger */
-    
+    gap: 5px;
 }
 
 .hamburger-btn {
@@ -71,7 +71,7 @@
     flex: 0;
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
+    gap: 8px !important;
 }
 
 .icon-btn { /* Tadinya .icon.btn */
@@ -928,6 +928,19 @@ body {
 
     .nav-sidebar {
         width: 80%;
+    }
+
+    .icon-btn {
+        font-size: 1rem;
+    }
+
+    .logo {
+        font-size: 1.1rem;
+    }
+
+    .hamburger-btn {
+        padding: 5px 8px;
+        font-size: 0.8rem;
     }
 }
 
