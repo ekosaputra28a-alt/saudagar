@@ -575,11 +575,12 @@
 .cart-sidebar {
     position: fixed;
     top: 0;
-    right: -400px;
-    width: 360px;
+    right: -100px;
+    width: 85%;
+    max-width: 360px;
     height: 100%;
     background: var(--card-bg);
-    z-index: 10001;
+    z-index: 10005;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     box-shadow: -10px 0 30px rgba(0,0,0,0.15);
     display: flex;
@@ -941,6 +942,10 @@ body {
     .hamburger-btn {
         padding: 5px 8px;
         font-size: 0.8rem;
+    }
+
+    .menu-text {
+        display: none;
     }
 }
 
