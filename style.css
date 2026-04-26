@@ -921,6 +921,10 @@ body {
     .product-grid {
         grid-template-columns: 1fr;
     }
+
+    .cart-sidebar {
+        width: 80%;
+    }
 }
 
 /* Perbaikan Media Query */
