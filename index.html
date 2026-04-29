@@ -7,9 +7,8 @@
 
     <script>
         const token = localStorage.getItem("token");
-        const user = localStorage.getItem("user");
 
-        if (!token || !user) {
+        if (!token) {
             alert("Silakan login terlebih dahulu");
             window.location.href = "auth.html";
         }
@@ -330,30 +329,29 @@
     let cart = [];
     const token = localStorage.getItem("token");
 
-    let userId = null;
+        let userId = null;
 
     try {
         const token = localStorage.getItem("token");
 
-        if (!token) {
-            throw new Error("Token tidak ada");
+        if (!token || token.split(".").length !== 3) {
+            throw new Error("Token tidak valid");
         }
 
         const base64Payload = token.split(".")[1];
         const decodedPayload = JSON.parse(atob(base64Payload));
 
-        userId = decodedPayload.id;
+        userId = decodedPayload.id || decodedPayload.userId;
+
+        if (!userId) throw new Error("UserId tidak ada di token");
 
     } catch (error) {
         console.error("Token error:", error);
-
-        // bersihin data login yang rusak
         localStorage.removeItem("token");
         localStorage.removeItem("user");
 
-        alert("Session kamu rusak / expired, silakan login ulang");
-
-        window.location.href = "./auth.html";
+        // 🔥 WAJIB redirect
+        window.location.href = "auth.html";
     }
 
     // 🔄 LOAD CART DARI BACKEND
