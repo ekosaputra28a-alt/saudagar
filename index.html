@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BurgerQu x Saudagar</title>
+
+    <script>
+        const token = localStorage.getItem("token");
+        const user = localStorage.getItem("user");
+
+        if (!token || !user) {
+            alert("Silakan login terlebih dahulu");
+            window.location.href = "login.html";
+        }
+    </script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -220,6 +231,8 @@
     <button class="checkout-btn">Lanjut Bayar</button>
 </div>
 
+
+    
 
     <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -675,7 +688,7 @@ inputPencarian.addEventListener('input', function() {
         tersedia: true
     }));
 
-    semuaData = hasil; // 🔥 INI YANG KURANG
+    semuaData = hasil; 
     tampilkanMenu(hasil);
 })
   .catch(err => console.error(err));

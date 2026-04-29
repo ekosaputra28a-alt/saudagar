@@ -2,6 +2,8 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import cors from "cors";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
 dotenv.config();
 
@@ -96,6 +98,68 @@ async function startServer() {
 
                 app.get("/", (req, res) => {
             res.send("API Burger jalan 🚀");
+        });
+
+        app.post("/register", async (req, res) => {
+            try {
+                const { name, email, password, phone } = req.body;
+
+                const existingUser = await usersCollection.findOne({ email });
+                if (existingUser) {
+                    return res.status(400).json({ message: "Email sudah terdaftar"});
+                }
+
+                const hashedPassword = await bcrypt.hash(password, 10);
+
+                await usersCollection.insertOne({
+                    name,
+                    email,
+                    phone,
+                    password: hashedPassword,
+                    createdAt: new Date()
+                });
+
+                res.json({ message: "Register berhasil" });
+
+            }catch (err) {
+                console.error(err);
+                res.status(500).json({ error: "Gagal register" });
+            }
+        });
+
+        app.post("/login", async (req, res) =>{
+            try {
+                const { email, password } = req.body;
+
+                const user = await usersCollection.findOne({ email });
+                if (!user) {
+                    return res.status(400).json({ message: "User tidak ditemukan" });
+                }
+
+                const valid = await bcrypt.compare(password, user.password);
+                if (!valid) {
+                    return res.status(400).json({ message: "Password salah"});
+                }
+
+                const token = jwt.sign(
+                    { id: user._id, email: user.email },
+                    process.env.JWT_SECRET,
+                    { expiresIn: "1d" }
+                );
+
+                res.json({
+                    message: "Login berhasil",
+                    token,
+                    user: {
+                        name: user.name,
+                        email: user.email
+                    }
+                });
+
+            }catch (err) {
+                console.error(err);
+                res.status(500).json({ error: "Gagal login" });
+            }
         });
 
         // =========================
