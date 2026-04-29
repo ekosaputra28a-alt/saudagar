@@ -178,7 +178,7 @@ async function startServer() {
             );
 
             res.json({ message: "Cart updated" });
-        });
+        })
 
         // =========================
         // START SERVER
