@@ -162,6 +162,24 @@ async function startServer() {
             }
         });
 
+        app.get("/cart/:userId", async (req, res) => {
+            const cart = await cartCollection.findOne({ userId: req.params.userId });
+
+            res.json(cart || { userId: req.params.userId, items: [] });
+        });
+
+        app.post("/cart", async (req, res) => {
+            const { userId, items } = req.body;
+            
+            await cartCollection.updateOne (
+                { userId },
+                { $set: { items }},
+                { upsert: true}
+            );
+
+            res.json({ message: "Cart updated" });
+        });
+
         // =========================
         // START SERVER
         // =========================
