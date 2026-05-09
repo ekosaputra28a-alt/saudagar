@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profil - FoodVerse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="profile.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h2>FoodVerse</h2>
+        <a href="index.html">Kembali</a>
+    </div>
+
+    <div class="profile-container">
+
+        <!-- LEFT SIDE -->
+        <div class="profile-left">
+            <div class="user-info">
+                <img src="https://i.pravatar.cc/100" class="avatar">
+                <div>
+                    <h4 id="displayNama">User</h4>
+                    <small>✏️ Ubah Profil</small>
+                </div>
+            </div>
+
+            <div class="menu">
+                <p class="menu-title">Akun saya</p>
+                <a href="#" class="active">Profil</a>
+                <a href="#">Bank & Menu</a>
+                <a href="#">Alamat</a>
+                <a href="#">Ubah Password</a>
+                <a href="#">Notifikasi</a>
+                <a href="#">Privasi</a>
+
+                <p class="menu-title">Lainnya</p>
+                <a href="#">Pesanan Saya</a>
+                <a href="#">Voucher Saya</a>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="profile-right">
+            <h2>Profil Saya</h2>
+            <p>Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
+
+            <label>Nama</label>
+            <input type="text" id="nama">
+
+            <label>Alamat</label>
+            <textarea id="alamat"></textarea>
+
+            <div class="email-row">
+                <div class="email-info">
+                    <label>Email</label>
+                    <input type="email" id="email" value="user@gmail.com" readonly>
+                </div>
+                <div>
+                    <button class="edit-btn" onclick="ubahEmail()">Ubah</button>
+                </div>
+            </div>
+
+            <div class="NoTlp-row">
+                <div class="NoTlp-info">
+                    <label>Nomor Telepon</label>
+                    <input type="tel" id="notelepon" value="0857xxxx" disabled>
+                </div>
+                <div>
+                    <button onclick="enableNoTlp()">Edit</button>
+                </div>
+            </div>
+
+            <div class="gender-group">
+                <label>Jenis Kelamin</label>
+
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" name="gender" value="Laki-laki">
+                        <span>Laki-Laki</span>
+                    </label>
+
+                    <label class="radio-item">
+                        <input type="radio" name="gender" value="Perempuan">
+                        <span>Perempuan</span>
+                    </label>
+                </div>
+
+                <div class="tgl-row">
+                    <div class="tgl-item">
+                        <label>Tanggal</label>
+                        <input type="text" id="tgl" inputmode="numeric" maxlength="2" placeholder="DD">
+                    </div>
+
+                    <div class="tgl-item">
+                        <label>Bulan</label>
+                        <input type="text" id="bulan" inputmode="numeric" maxlength="2" placeholder="MM">
+                    </div>
+
+                    <div class="tgl-item">
+                        <label>Tahun</label>
+                        <input type="text" id="tahun" inputmode="numeric" maxlength="4" placeholder="YYYY">
+                    </div>
+                </div>
+            </div>
+            <button onclick="simpanData()">Simpan Perubahan</button>
+        </div>
+
+    </div>
+
+    <script>
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("Harus login dulu!");
+            window.location.href = "auth.html";
+        }
+
+        const namaInput = document.getElementById("nama");
+        const alamatInput = document.getElementById("alamat");
+        const displayNama = document.getElementById("displayNama");
+        const tgl = document.getElementById("tgl");
+        const bulan = document.getElementById("bulan");
+        const tahun = document.getElementById("tahun");
+
+        const savedNama = localStorage.getItem("burgerQu_nama") || "User";
+        const savedAlamat = localStorage.getItem("burgerQu_alamat") || "";
+
+        namaInput.value = savedNama;
+        alamatInput.value = savedAlamat;
+        displayNama.innerText = savedNama;
+
+        function simpanData() {
+            localStorage.setItem("burgerQu_nama", namaInput.value);
+            localStorage.setItem("burgerQu_alamat", alamatInput.value);
+
+            displayNama.innerText = namaInput.value;
+
+            alert("Berhasil disimpan!");
+        }
+
+        function enableNoTlp() {
+            const input = document.getElementById("notelepon");
+            input.disabled = false;
+            input.focus();
+        }
+
+        tgl.addEventListener("input", () => {
+            if (tgl.value.length === 2) bulan.focus();
+        });
+
+        bulan.addEventListener("input", () => {
+            if (bulan.value.length === 2) tahun.focus();
+        });
+    </script>
+
+</body>
+
+</html>

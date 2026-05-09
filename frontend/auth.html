@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Register - BurgerQu</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="auth-style.css">
+</head>
+
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>Burger<span>Qu</span></h1>
+        <p id="auth-subtitle">Masuk untuk menikmati hidangan terbaik kami!</p>
+      </div>
+
+      <div class="tab-control">
+        <button class="tab-btn active" onclick="switchForm('login', this)">Login</button>
+        <button class="tab-btn" onclick="switchForm('register', this)">Daftar Akun</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input id="loginEmail" type="email" placeholder="Alamat Email Anda" required>
+        </div>
+
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input id="loginPassword" type="password" placeholder="Kata Sandi" required>
+        </div>
+
+        <div class="forgot-pass">
+          <a href="#">Lupa password?</a>
+        </div>
+
+        <button type="submit" class="submit-btn">MASUK SEKARANG</button>
+      </form>
+
+      <form id="registerForm" class="auth-form" style="display: none;">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Nama Lengkap" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" placeholder="Alamat Email" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-phone"></i>
+          <input type="tel" placeholder="Nomor WhatsApp" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Buat Kata Sandi" required>
+        </div>
+        <button type="submit" class="submit-btn register-variant">DAFTAR MEMBER</button>
+      </form>
+
+      <div class="auth-footer">
+        <hr>
+        <a href="index.html" class="back-link">
+          <i class="fas fa-chevron-left"></i> Kembali ke Menu Utama
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchForm(type, element) {
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const subtitle = document.getElementById('auth-subtitle');
+      const tabs = document.querySelectorAll('.tab-btn');
+
+      tabs.forEach(tab => tab.classList.remove('active'));
+      element.classList.add('active');
+
+      if (type === 'login') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        subtitle.innerText = 'Masuk untuk menikmati hidangan terbaik kami!';
+      } else {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        subtitle.innerText = 'Gabung member dan dapatkan promo menarik!';
+      }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+        if (!res.ok) { alert(data.message || "Login gagal"); return; }
+
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        alert("Login berhasil!");
+        window.location.href = "index.html";
+      } catch (err) {
+        console.error(err);
+        alert("Server error");
+      }
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.querySelector("#registerForm input[type='text']").value;
+      const email = document.querySelector("#registerForm input[type='email']").value;
+      const phone = document.querySelector("#registerForm input[type='tel']").value;
+      const password = document.querySelector("#registerForm input[type='password']").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, phone, password })
+        });
+
+        const data = await res.json();
+        if (!res.ok) { alert(data.message || "Register gagal"); return; }
+
+        alert("Register berhasil! Silakan login");
+        document.querySelector(".tab-btn").click();
+      } catch (err) {
+        console.error(err);
+        alert("Server error");
+      }
+    });
+  </script>
+</body>
+
+</html>
