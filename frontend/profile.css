@@ -6,17 +6,36 @@ body {
 
 /* NAVBAR */
 .navbar {
-  background: #ffc107;
-  padding: 15px 25px;
+  background: #000000;
+  padding: 15px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.navbar h2 {
+  color: #ffc107
+}
+
 .navbar a {
   text-decoration: none;
-  color: black;
+  color: #ffc107;
   font-weight: bold;
+}
+
+.btn-back {
+  color: #f1c40f;
+  border: 2px solid #f1c40f;
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  background: transparent;
+  transition: 0.3s;
+}
+
+.btn-back:hover {
+  background: #f1c40f;
+  color: black;
 }
 
 /* LAYOUT */

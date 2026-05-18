@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,14 +8,11 @@
 
     <script>
         const token = localStorage.getItem("token");
-        console.log("Token " + token)
         if (!token) {
             alert("Silakan login terlebih dahulu");
             window.location.href = "auth.html";
         }
     </script>
-
-
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -22,6 +20,7 @@
 
 <body>
 
+    <!-- ========== NAVBAR ========== -->
     <nav class="navbar">
         <div class="nav-left">
             <button class="hamburger-btn" id="openNav">
@@ -32,78 +31,82 @@
                 </div>
                 <span class="menu-text">Menu</span>
             </button>
+            <div class="logo">FoodVerse</div>
         </div>
 
         <div class="nav-center">
-            <div class="logo">
-                <i class=""></i> FoodVerse
-            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="active">Beranda</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#">Promo</a></li>
+                <li><a href="#tentang">Tentang Kami</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
         </div>
 
         <div class="nav-right">
             <div class="search-wrapper" style="display: flex; align-items: center; gap: 5px;">
                 <input type="text" id="inputPencarian" placeholder="Cari menu..."
-                    style="display: none; padding : 5px 12px; border-radius: 20px; border: 1px solid #ffc107; outline: none; width: 150px;">
+                    style="display: none; padding: 5px 12px; border-radius: 20px; border: 1px solid #ffc107; outline: none; width: 150px;">
                 <a href="#" class="icon-btn" id="btnCari"><i class="fas fa-search"></i></a>
             </div>
+
             <div class="profile-dropdown">
                 <button id="btnProfile" class="icon-btn">
                     <i class="fas fa-user"></i>
                 </button>
-
                 <div class="dropdown-menu">
-                    <p id="navUserName" style="margin: 5px 0; font-weight:bold;">User</p>
+                    <p id="navUserName" style="margin: 5px 0; font-weight: bold;">User</p>
                     <hr>
                     <a href="profile.html" id="btnProfilePage">Profil</a>
-                    <a href="#" id="btnRiwayat">Riwayat Pesanan</a>
                     <a href="#" id="btnLogout">Logout</a>
                 </div>
             </div>
+
             <button id="darkModeToggle" class="icon-btn">
                 <i class="fas fa-moon"></i>
             </button>
-            <!-- <button id="btn-logout" class="btn-danger">Logout</button> -->
+
             <a href="#" class="icon-btn cart-btn">
-                <i class="fa-notdog-duo fa-solid fa-cart-shopping"></i>
+                <i class="fa-solid fa-cart-shopping"></i>
                 <span class="cart-badge">0</span>
             </a>
         </div>
 
+        <!-- Nav Sidebar -->
         <div class="nav-sidebar" id="navSidebar">
             <div class="sidebar-header">
                 <div class="logo" style="color: white;">
                     <i class="fas fa-store"></i> FoodVerse
                 </div>
                 <button class="close-sidebar" id="closeNav">
-                    <i class="fa-solid fa-xmark"></i></button>
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-
-            <ul style="list-style: none; margin-top: 30px; padding: 0;">
-                <li style="padding: 15px 0; border-bottom: 1px solid #333;">
-                    <a href="#"
-                        style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#hero">
                         <i class="fas fa-home"></i> Home
                     </a>
                 </li>
-                <li style="padding: 15px 0; border-bottom: 1px solid #333;">
-                    <a href="#menu"
-                        style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;">
+                <li>
+                    <a href="#menu">
                         <i class="fas fa-utensils"></i> Daftar Menu
                     </a>
                 </li>
-                <li style="padding: 15px 0; border-bottom: 1px solid #333;">
-                    <a href="#"
-                        style="color: white; text-decoration: none; display: flex; align-items: center; gap: 15px;">
+                <li>
+                    <a href="#riwayat">
                         <i class="fas fa-history"></i> Riwayat Pesanan
                     </a>
-                    <div id="daftarRiwayat" style="padding: 10px 15px; font-size: 0.75rem; color: #bbb;">
-                        <p style="font-style: italic; opacity: 0.6;">Belum ada pesanan terbaru.</p>
+                    <div id="daftarRiwayat" class="history-wrapper">
+                        <p class="empty-history">Belum ada pesanan terbaru.</p>
                     </div>
                 </li>
             </ul>
         </div>
     </nav>
-    <!--< -->
+
+    <!-- ========== HERO SLIDER ========== -->
     <header class="promo-slider">
         <div class="slider-wrapper">
             <div class="slide active"
@@ -128,22 +131,23 @@
         <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
         <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
     </header>
-    <section class="categories-section">
-        <div class="category-container"
-            style="display: flex; gap: 20px; overflow-x: auto; padding: 20px; justify-content: center;">
-            <div class="category-item" onclick="filterMenu('burger')" style="cursor: pointer; text-align: center;">
+
+    <!-- ========== CATEGORIES ========== -->
+    <section class="categories-section" id="menu">
+        <div class="category-container">
+            <div class="category-item" onclick="filterMenu('burger')">
                 <div class="category-icon"><i class="fas fa-hamburger"></i></div>
                 <h4>Burger</h4>
             </div>
-            <div class="category-item" onclick="filterMenu('chicken')" style="cursor: pointer; text-align: center;">
+            <div class="category-item" onclick="filterMenu('chicken')">
                 <div class="category-icon"><i class="fas fa-drumstick-bite"></i></div>
                 <h4>Chicken</h4>
             </div>
-            <div class="category-item" onclick="filterMenu('minuman')" style="cursor: pointer; text-align: center;">
+            <div class="category-item" onclick="filterMenu('minuman')">
                 <div class="category-icon"><i class="fas fa-coffee"></i></div>
                 <h4>Minuman</h4>
             </div>
-            <div class="category-item" onclick="filterMenu('pizza')" style="cursor: pointer; text-align: center;">
+            <div class="category-item" onclick="filterMenu('pizza')">
                 <div class="category-icon"><i class="fas fa-pizza-slice"></i></div>
                 <h4>Pizza</h4>
             </div>
@@ -155,9 +159,80 @@
         </div>
     </section>
 
-    <h2 id="Display-title" style="text-align: center; margin-top: 50px; font-size: 2rem">Semua Menu</h2>
+    <!-- ========== MENU LIST ========== -->
+    <h2 id="Display-title" style="text-align: center; margin-top: 50px; font-size: 2rem;">Semua Menu</h2>
     <section id="Menu-container" class="product-grid"></section>
 
+    <!-- ========== ABOUT ========== -->
+    <section class="about-section" id="tentang">
+        <div class="about-image">
+            <img src="https://cdn.pixabay.com/photo/2017/08/07/11/14/people-2602736_1280.jpg" alt="FoodVerse">
+        </div>
+        <div class="about-content">
+            <span class="about-tag">Tentang Kami</span>
+            <h2>Pengalaman Kuliner <span>Modern & Lezat</span></h2>
+            <p>FoodVerse hadir untuk memberikan pengalaman memesan makanan yang cepat, modern, dan menyenangkan dengan
+                berbagai menu favorit berkualitas premium.</p>
+            <div class="about-features">
+                <div class="feature-box">
+                    <h3>100+</h3>
+                    <p>Menu Pilihan</p>
+                </div>
+                <div class="feature-box">
+                    <h3>24/7</h3>
+                    <p>Fast Delivery</p>
+                </div>
+                <div class="feature-box">
+                    <h3>4.9★</h3>
+                    <p>Customer Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section class="contact-section" id="kontak">
+        <div class="contact-left">
+            <span class="contact-tag">Hubungi Kami</span>
+            <h2>Butuh Bantuan <span>FoodVerse?</span></h2>
+            <p>Kami siap melayani pesanan, pertanyaan, dan kritik saran kamu setiap hari.</p>
+            <a href="#" class="contact-btn">Chat WhatsApp</a>
+        </div>
+        <div class="contact-right">
+            <div class="contact-card">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <div>
+                        <h4>Alamat</h4>
+                        <p>Sleman, Yogyakarta</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div>
+                        <h4>Telepon</h4>
+                        <p>+62 857-5891-4387</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <div>
+                        <h4>Email</h4>
+                        <p>foodverse@gmail.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
+                    <div>
+                        <h4>Jam Buka</h4>
+                        <p>09:00 - 23:00 WIB</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
     <footer class="main-footer">
         <div class="footer-content">
             <div class="footer-info">
@@ -177,8 +252,10 @@
         </div>
     </footer>
 
+    <!-- ========== OVERLAY ========== -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+    <!-- ========== CART SIDEBAR ========== -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="sidebar-header">
             <h3>Keranjang Belanja</h3>
@@ -191,18 +268,14 @@
             <p class="empty-msg">Keranjang masih kosong nih...</p>
         </div>
 
-        <div class="checkout-form"
-            style="margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 10px; margin-bottom: 15px;">
+        <div class="checkout-form">
             <h4 style="margin-bottom: 10px; font-size: 0.9rem; color: #333;">Data Pengiriman</h4>
 
-            <input type="text" id="customerName" placeholder="Nama Lengkap"
-                style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;">
+            <input type="text" id="customerName" placeholder="Nama Lengkap">
 
             <div class="metode-container">
                 <label class="metode-label">Metode:</label>
-
                 <div class="radio-group modern-radio">
-
                     <label class="radio-card">
                         <input type="radio" name="metode" value="Makan di Tempat" checked onclick="toggleAlamat(false)">
                         <div class="radio-content">
@@ -210,7 +283,6 @@
                             <span>Makan di Sini</span>
                         </div>
                     </label>
-
                     <label class="radio-card">
                         <input type="radio" name="metode" value="Delivery" onclick="toggleAlamat(true)">
                         <div class="radio-content">
@@ -221,559 +293,507 @@
                 </div>
             </div>
 
-            <div class="checkout-form">
-
-                <div id="wrapperAlamat" class="alamat-wrapper" style="display: none;">
-                    <textarea id="customerAddress" placeholder="Alamat Lengkap (Jl, No Rumah, Kelurahan)">
-        </textarea>
-                </div>
-
-                <div class="payment-wrapper">
-                    <label for="paymentMethod">Metode Pembayaran</label>
-                    <select id="paymentMethod">
-                        <option value="Tunai">Bayar di Tempat (COD)</option>
-                        <option value="Transfer">Transfer Bank</option>
-                    </select>
-                </div>
+            <div id="wrapperAlamat" class="alamat-wrapper" style="display: none;">
+                <textarea id="customerAddress" placeholder="Alamat Lengkap (Jl, No Rumah, Kelurahan)"></textarea>
             </div>
 
-            <div class="total-price"
-                style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px">
+            <div class="payment-wrapper">
+                <label for="paymentMethod">Metode Pembayaran</label>
+                <select id="paymentMethod" class="payment-select"></select>
+            </div>
+
+            <div class="total-price" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                 <span>Total:</span>
                 <span id="cartTotal">Rp 0</span>
             </div>
+
             <button class="checkout-btn">Lanjut Bayar</button>
         </div>
+    </div>
 
+    <!-- ========== TOAST ========== -->
+    <div id="toastNotification" class="toast">Berhasil ditambahkan ke keranjang!</div>
 
-
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-
-                const btnProfile = document.getElementById("btnProfile");
-                const profileDropdown = document.querySelector(".profile-dropdown");
-
-                btnProfile.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    profileDropdown.classList.toggle("active");
-                });
-
-                document.addEventListener("click", (e) => {
-                    if (!profileDropdown.contains(e.target)) {
-                        profileDropdown.classList.remove("active");
-                    }
-                });
-
-
-                const savedNama = localStorage.getItem('burgerQu_nama');
-                const savedAlamat = localStorage.getItem('burgerQu_alamat');
-
-                if (savedNama) {
-                    document.getElementById('customerName').value = savedNama;
-                }
-                if (savedAlamat) {
-                    document.getElementById('customerAddress').value = savedAlamat;
-                }
-
-                let semuaData = [];
-
-                const slides = document.querySelectorAll('.slide');
-                const nextBtn = document.querySelector('.next');
-                const prevBtn = document.querySelector('.prev');
-                let currentSlide = 0;
-                let slideInterval;
-
-                function showSlide(n) {
-                    slides[currentSlide].classList.remove('active');
-                    currentSlide = (n + slides.length) % slides.length;
-                    slides[currentSlide].classList.add('active');
-                }
-
-                function nextSlide() {
-                    showSlide(currentSlide + 1);
-                }
-
-                if (nextBtn && prevBtn) {
-                    nextBtn.addEventListener('click', () => {
-                        nextSlide();
-                        restartTimer();
-                    });
-                    prevBtn.addEventListener('click', () => {
-                        showSlide(currentSlide - 1);
-                        restartTimer();
-                    });
-                }
-
-                function startTimer() {
-                    slideInterval = setInterval(nextSlide, 5000);
-                }
-
-                function restartTimer() {
-                    clearInterval(slideInterval);
-                    startTimer();
-                }
-
-                startTimer();
-
-                const darkModeToggle = document.getElementById('darkModeToggle');
-                const body = document.body;
-                const icon = darkModeToggle.querySelector('i');
-
-
-                if (localStorage.getItem('theme') === 'dark') {
-                    body.classList.add('dark-mode');
-                    icon.classList.replace('fa-moon', 'fa-sun'); // Ganti icon jadi matahari
-                }
-
-
-                darkModeToggle.addEventListener('click', () => {
-                    body.classList.toggle('dark-mode');
-
-
-                    if (body.classList.contains('dark-mode')) {
-                        icon.classList.replace('fa-moon', 'fa-sun');
-                        localStorage.setItem('theme', 'dark');
-                    } else {
-                        icon.classList.replace('fa-sun', 'fa-moon');
-                        localStorage.setItem('theme', 'light');
-                    }
-                });
-
-
-                let cart = [];
-                const token = localStorage.getItem("token");
-
-                let userId = null;
-
-                try {
-                    const token = localStorage.getItem("token");
-
-                    if (!token || token.split(".").length !== 3) {
-                        throw new Error("Token tidak valid");
-                    }
-
-                    const base64Payload = token.split(".")[1];
-                    const decodedPayload = JSON.parse(atob(base64Payload));
-
-                    userId = decodedPayload.id || decodedPayload.userId;
-
-                    if (!userId) throw new Error("UserId tidak ada di token");
-
-                } catch (error) {
-                    console.error("Token error:", error);
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("user");
-
-                    window.location.href = "auth.html";
-                }
-
-                fetch(`http://localhost:5000/cart/${userId}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data && data.items) {
-                            cart = data.items;
-                            updateCartUI();
-                        }
-                    })
-                    .catch(err => console.error(err));
-
-                const navSidebar = document.getElementById('navSidebar');
-                const cartSidebar = document.getElementById('cartSidebar');
-                const overlay = document.getElementById('sidebarOverlay');
-                const cartItemsContainer = document.getElementById('cartItems');
-                const cartTotalElement = document.getElementById('cartTotal');
-                const cartBadge = document.querySelector('.cart-badge');
-                const displayTitle = document.getElementById('Display-title');
-                const menuContainer = document.getElementById('Menu-container');
-
-                const modal = document.getElementById('item-detail-modal');
-                const modalQtyInput = document.getElementById('modal-qty-input');
-
-                window.openModal = function (nama, harga, gambar, deskripsi) {
-                    document.getElementById('modal-name').innerText = nama;
-                    document.getElementById('modal-price').innerText = `Rp ${harga.toLocaleString()}`;
-                    document.getElementById('modal-img').src = gambar;
-                    document.getElementById('modal-desc').innerText = deskripsi;
-                    modalQtyInput.value = 1;
-
-                    modal.classList.add('active');
-                    modal.style.display = 'flex';
-
-                    const confirmBtn = document.getElementById('modalAddToCartBtn');
-                    confirmBtn.onclick = function () {
-                        tambahKeKeranjangOtomatis(nama, harga, gambar, parseInt(modalQtyInput.value));
-                        modal.style.display = 'none';
-                    };
-                };
-
-
-                document.getElementById('modal-plus').onclick = () => {
-                    modalQtyInput.value = parseInt(modalQtyInput.value) + 1;
-                };
-                document.getElementById('modal-minus').onclick = () => {
-                    if (parseInt(modalQtyInput.value) > 1) {
-                        modalQtyInput.value = parseInt(modalQtyInput.value) - 1;
-                    }
-                };
-
-
-                document.getElementById('closeModal').onclick = () => modal.style.display = 'none';
-                window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; };
-
-                window.tampilkanMenu = function (data) {
-                    if (!menuContainer) return;
-                    menuContainer.innerHTML = "";
-
-                    data.forEach(item => {
-                        const tombolBeli = item.tersedia
-                            ? `<button class="buy-btn" onclick="openModal('${item.nama}', ${item.harga}, '${item.image}', '${item.desc}')">
-                  <i class="fas fa-eye"></i> Lihat Detail
-               </button>`
-                            : `<button class="buy-btn disabled" style="background: #ccc; cursor: not-allowed;" disabled>
-                  <i class="fas fa-times-circle"></i> Stok Habis
-               </button>`;
-
-                        menuContainer.innerHTML += `
-            <div class="product-card ${item.tersedia ? '' : 'out-of-stock'}">
-                ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
-                <img src="${item.image}" alt="${item.nama}" style="${item.tersedia ? '' : 'filter: grayscale(1); opacity: 0.6;'}">
-                <div class="product-info-card">
-                    <h3>${item.nama}</h3>
-                    <p class="price">Rp ${item.harga.toLocaleString()}</p>
-                    ${tombolBeli}
+    <!-- ========== MODAL DETAIL ========== -->
+    <div id="item-detail-modal" class="modal">
+        <div class="modal-container">
+            <button class="close-icon" id="closeModal">
+                <i class="fa-regular fa-xmark"></i>
+            </button>
+            <div class="modal-content">
+                <img src="" id="modal-img" alt="Product Image">
+                <div class="product-info">
+                    <h3 id="modal-name">Nama Produk</h3>
+                    <p id="modal-desc">Deskripsi produk akan muncul disini.</p>
+                    <div class="modal-price" id="modal-price">IDR 0</div>
+                    <div class="modal-qty-control">
+                        <button type="button" class="btn-qty" id="modal-minus">-</button>
+                        <input type="text" value="1" id="modal-qty-input" readonly>
+                        <button type="button" class="btn-qty" id="modal-plus">+</button>
+                    </div>
+                    <button class="modal-add-btn" id="modalAddToCartBtn">
+                        <i class="fas fa-shopping-cart"></i> Tambahkan ke keranjang
+                    </button>
                 </div>
             </div>
-        `;
-                    });
-                };
-
-                window.ubahQtyManual = function (btn, delta) {
-                    const input = btn.parentElement.querySelector('.qty-input');
-                    let val = parseInt(input.value) + delta;
-                    if (val < 1) val = 1;
-                    input.value = val;
-                };
-
-                window.tambahKeKeranjangOtomatis = function (nama, harga, gambar, jumlah) {
-                    const existingItem = cart.find(item => item.name === nama);
-                    if (existingItem) {
-                        existingItem.quantity += jumlah;
-                    } else {
-                        cart.push({ name: nama, price: harga, quantity: jumlah, image: gambar });
-                    }
-
-                    updateCartUI();
-                    showToast();
-                };
-
-
-                window.showToast = function () {
-                    const toast = document.getElementById('toastNotification');
-                    toast.style.display = 'block';
-
-                    setTimeout(() => {
-                        toast.style.display = 'none';
-                    }, 2000);
-                }
-
-                document.querySelector('.checkout-btn').addEventListener('click', function () {
-                    if (cart.length === 0) {
-                        alert("Keranjang masih kosong!");
-                        return;
-                    }
-
-
-                    const nama = document.getElementById('customerName').value;
-                    const metodeAmbil = document.querySelector('input[name="metode"]:checked').value; // Cek Radio Button
-                    const alamatInput = document.getElementById('customerAddress').value;
-                    const metodeBayar = document.getElementById('paymentMethod').value;
-                    const scriptURL = 'https://script.google.com/macros/s/AKfycby2JZdYPdU5Gbm5ElLFNkOwlXGy0m1FIRbFTVTbSrjiwhXdlNSXLK0oNt9VxpmogPSl/exec'; // <-- GANTI INI
-
-                    const metodePengiriman = document.querySelector('input[name="metode"]:checked').value;
-
-                    const alamatFinal = (metodeAmbil === "Makan di Tempat") ? "Makan di Sini" : alamatInput;
-
-                    if (!nama) {
-                        alert("Nama wajib diisi!");
-                        return;
-                    }
-
-                    if (metodePengiriman === "Delivery" && !alamatInput) {
-                        alert("Mohon isi alamat untuk pengiriman!");
-                        return;
-                    }
-
-
-
-
-
-                    const dataPesanan = {
-                        customer: nama,
-                        address: alamatFinal,
-                        payment: metodeBayar,
-                        items: cart.map(item => `${item.name} (${item.quantity}x)`).join(", "),
-                        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-                    };
-
-                    this.innerText = "Memproses Pesanan...";
-                    this.disabled = true;
-
-                    fetch("http://localhost:5000/orders", {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(dataPesanan)
-                    })
-                        .then(res => res.json())
-                        .then(result => {
-
-
-                            let nomorWA = "6285758914087";
-                            let pesanWA = `*PESANAN BARU (BurgerQu)*\n\n` +
-                                `Nama: ${nama}\n` +
-                                `Alamat: ${alamatFinal}\n` +
-                                `Metode: ${metodePengiriman}\n\n` +
-                                `Detail Pesanan:\n${dataPesanan.items}\n\n` +
-                                `*Total: Rp ${dataPesanan.total.toLocaleString()}*`;
-
-                            window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanWA)}`, '_blank');
-
-                            cart = [];
-                            updateCartUI();
-                            document.getElementById('customerName').value = '';
-                            document.getElementById('customerAddress').value = '';
-
-                            alert("Pesanan berhasil!");
-                            this.innerText = "Lanjut Bayar";
-                            this.disabled = false;
-                        })
-                        .catch(error => {
-                            console.error(error);
-                            alert("Gagal kirim ke server!");
-                            this.innerText = "Lanjut Bayar";
-                            this.disabled = false;
-                        });
-                });
-
-
-                function updateCartUI() {
-                    const cartItemsContainer = document.getElementById('cartItems');
-                    const cartTotalElement = document.getElementById('cartTotal');
-                    const cartBadge = document.querySelector('.cart-badge');
-                    const cartIcon = document.querySelector('.cart-btn');
-
-                    cartItemsContainer.innerHTML = '';
-
-                    let totalHarga = 0;
-                    let totalBarang = 0;
-
-
-                    cart.forEach((item, index) => {
-                        totalHarga += item.price * item.quantity;
-                        totalBarang += item.quantity;
-
-                        cartItemsContainer.innerHTML += `
-            <div class="cart-item" style="display:flex; align-items:center; gap:10px; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
-                <img src="${item.image}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;">
-                <div style="flex:1;">
-                    <h4 style="margin:0; font-size:0.9rem;">${item.name}</h4>
-                    <small>${item.quantity}x Rp ${item.price.toLocaleString()}</small>
-                </div>
-                <button onclick="hapusSatuItem(${index})" style="background:none; border:none; color:#ff4757; cursor:pointer;">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-                    });
-
-
-                    if (cart.length === 0) {
-                        cartItemsContainer.innerHTML = '<p class="empty-msg" style="text-align:center; padding:20px; opacity:0.6;">Keranjang masih kosong nih...</p>';
-                    }
-
-
-                    cartTotalElement.innerText = `Rp ${totalHarga.toLocaleString()}`;
-                    cartBadge.innerText = totalBarang;
-
-
-                    if (totalBarang > 0) {
-                        cartIcon.classList.add('cart-bounce');
-                        setTimeout(() => {
-                            cartIcon.classList.remove('cart-bounce');
-                        }, 300);
-                    }
-
-
-                    localStorage.setItem('keranjangKu', JSON.stringify(cart));
-
-                    fetch("http://localhost:5000/cart", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + localStorage.getItem("token") }, body: JSON.stringify({ userId, items: cart }) }).catch(err => console.error(err));
-                }
-
-
-                window.hapusSatuItem = function (index) {
-                    cart.splice(index, 1);
-                    updateCartUI();
-                };
-
-                const openNav = () => { navSidebar.classList.add('active'); overlay.style.display = 'block'; tampilkanRiwayat(); };
-                const openCart = () => { cartSidebar.classList.add('active'); overlay.style.display = 'block'; };
-                const tutupSemua = () => {
-                    navSidebar.classList.remove('active');
-                    cartSidebar.classList.remove('active');
-                    overlay.style.display = 'none';
-                };
-
-                const tutupModal = () => {
-                    modal.classList.remove('active');
-                    setTimeout(() => {
-                        if (!modal.classList.contains('active')) {
-                            modal.style.display = 'none';
-                        }
-                    }, 300);
-                };
-
-                document.getElementById('closeModal').onclick = tutupModal;
-
-
-                window.filterMenu = function (category) {
-                    displayTitle.innerText = "Menu " + category.charAt(0).toUpperCase() + category.slice(1);
-
-                    const hasilFilter = semuaData.filter(item => item.kategori === category);
-
-                    tampilkanMenu(hasilFilter);
-                    displayTitle.scrollIntoView({ behavior: 'smooth' });
-                };
-
-                document.querySelector('.hamburger-btn').addEventListener('click', openNav);
-                document.querySelector('.cart-btn').addEventListener('click', (e) => { e.preventDefault(); openCart(); });
-                document.getElementById('closeNav').addEventListener('click', tutupSemua);
-                document.getElementById('closeSidebar').addEventListener('click', tutupSemua);
-                overlay.addEventListener('click', tutupSemua);
-
-
-                const btnCari = document.getElementById('btnCari');
-                const inputPencarian = document.getElementById('inputPencarian');
-
-
-                btnCari.addEventListener('click', (e) => {
-                    e.preventDefault();
-
-                    const isHidden = inputPencarian.style.display === 'none' || inputPencarian.style.display === '';
-
-                    if (isHidden) {
-                        inputPencarian.style.display = 'inline-block';
-                        inputPencarian.focus();
-                    } else {
-                        inputPencarian.style.display = 'none';
-                        inputPencarian.value = '';
-
-                        tampilkanMenu(semuaData);
-                        displayTitle.innerText = 'Semua Menu';
-                    }
-                });
-
-
-                inputPencarian.addEventListener('input', function () {
-                    const keyword = this.value.toLowerCase().trim(); // Ambil input & hapus spasi liar
-
-                    const hasilCari = semuaData.filter(item => {
-                        const namaMenu = (item.nama || "").toLowerCase();
-                        const deskripsiMenu = (item.desc || "").toLowerCase();
-                        return namaMenu.includes(keyword) || deskripsiMenu.includes(keyword);
-                    });
-
-                    displayTitle.innerText = keyword ? `Mencari: "${keyword}"` : "Semua Menu";
-
-                    tampilkanMenu(hasilCari);
-
-                    if (keyword.length > 0) {
-                        displayTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
-
-                fetch("http://localhost:5000/menu")
-                    .then(res => res.json())
-                    .then(data => {
-
-                        const hasil = data.map((item, index) => ({
-                            id: index,
-                            nama: item.name,
-                            harga: item.price,
-                            kategori: item.kategori,
-                            badge: "DB",
-                            image: item.image,
-                            desc: "Data dari MongoDB",
-                            tersedia: true
-                        }));
-
-                        semuaData = hasil;
-                        tampilkanMenu(hasil);
-                    })
-                    .catch(err => console.error(err));
-                updateCartUI();
+        </div>
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const paymentMethod = document.getElementById("paymentMethod");
+            const btnProfile = document.getElementById("btnProfile");
+            const profileDropdown = document.querySelector(".profile-dropdown");
+
+            // Profile dropdown toggle
+            btnProfile.addEventListener("click", (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle("active");
             });
+            document.addEventListener("click", (e) => {
+                if (!profileDropdown.contains(e.target)) {
+                    profileDropdown.classList.remove("active");
+                }
+            });
+
+            // Restore saved form data
+            const savedNama = localStorage.getItem('burgerQu_nama');
+            const savedAlamat = localStorage.getItem('burgerQu_alamat');
+            if (savedNama) document.getElementById('customerName').value = savedNama;
+            if (savedAlamat) document.getElementById('customerAddress').value = savedAlamat;
+
+            let semuaData = [];
+
+            // ---- SLIDER ----
+            const slides = document.querySelectorAll('.slide');
+            const nextBtn = document.querySelector('.next');
+            const prevBtn = document.querySelector('.prev');
+            let currentSlide = 0;
+            let slideInterval;
+
+            function showSlide(n) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (n + slides.length) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+
+            function nextSlide() { showSlide(currentSlide + 1); }
+            function startTimer() { slideInterval = setInterval(nextSlide, 5000); }
+            function restartTimer() { clearInterval(slideInterval); startTimer(); }
+
+            if (nextBtn && prevBtn) {
+                nextBtn.addEventListener('click', () => { nextSlide(); restartTimer(); });
+                prevBtn.addEventListener('click', () => { showSlide(currentSlide - 1); restartTimer(); });
+            }
+            startTimer();
+
+            // ---- DARK MODE ----
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const icon = darkModeToggle.querySelector('i');
+
+            if (localStorage.getItem('theme') === 'dark') {
+                body.classList.add('dark-mode');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+
+            darkModeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                if (body.classList.contains('dark-mode')) {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // ---- AUTH / USER ID ----
+            let cart = [];
+            let userId = null;
+
+            try {
+                const token = localStorage.getItem("token");
+                if (!token || token.split(".").length !== 3) throw new Error("Token tidak valid");
+                const decodedPayload = JSON.parse(atob(token.split(".")[1]));
+                userId = decodedPayload.id || decodedPayload.userId;
+                if (!userId) throw new Error("UserId tidak ada di token");
+            } catch (error) {
+                console.error("Token error:", error);
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "auth.html";
+            }
+
+            // ---- LOAD CART FROM SERVER ----
+            fetch("http://localhost:5000/cart", {
+                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.items) {
+                        cart = data.items;
+                        updateCartUI();
+                    }
+                })
+                .catch(err => console.error(err));
+
+            // ---- DOM REFS ----
+            const navSidebar = document.getElementById('navSidebar');
+            const cartSidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+            const cartBadge = document.querySelector('.cart-badge');
+            const displayTitle = document.getElementById('Display-title');
+            const menuContainer = document.getElementById('Menu-container');
+            const modal = document.getElementById('item-detail-modal');
+            const modalQtyInput = document.getElementById('modal-qty-input');
+
+            // ---- MODAL ----
+            window.openModal = function (nama, harga, gambar, deskripsi) {
+                document.getElementById('modal-name').innerText = nama;
+                document.getElementById('modal-price').innerText = `Rp ${harga.toLocaleString()}`;
+                document.getElementById('modal-img').src = gambar;
+                document.getElementById('modal-desc').innerText = deskripsi;
+                modalQtyInput.value = 1;
+                modal.classList.add('active');
+                modal.style.display = 'flex';
+
+                document.getElementById('modalAddToCartBtn').onclick = function () {
+                    tambahKeKeranjangOtomatis(nama, harga, gambar, parseInt(modalQtyInput.value));
+                    tutupModal();
+                };
+            };
+
+            document.getElementById('modal-plus').onclick = () => {
+                modalQtyInput.value = parseInt(modalQtyInput.value) + 1;
+            };
+            document.getElementById('modal-minus').onclick = () => {
+                if (parseInt(modalQtyInput.value) > 1) modalQtyInput.value = parseInt(modalQtyInput.value) - 1;
+            };
+
+            const tutupModal = () => {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    if (!modal.classList.contains('active')) modal.style.display = 'none';
+                }, 300);
+            };
+
+            document.getElementById('closeModal').onclick = tutupModal;
+            window.onclick = (e) => { if (e.target == modal) tutupModal(); };
+
+            // ---- MENU DISPLAY ----
+            window.tampilkanMenu = function (data) {
+                if (!menuContainer) return;
+                menuContainer.innerHTML = "";
+
+                data.forEach(item => {
+                    const tombolBeli = item.tersedia
+                        ? `<button class="buy-btn" onclick="openModal('${item.nama}', ${item.harga}, '${item.image}', '${item.desc}')">
+                            <i class="fas fa-eye"></i> Lihat Detail
+                           </button>`
+                        : `<button class="buy-btn disabled" style="background: #ccc; cursor: not-allowed;" disabled>
+                            <i class="fas fa-times-circle"></i> Stok Habis
+                           </button>`;
+
+                    menuContainer.innerHTML += `
+                        <div class="product-card ${item.tersedia ? '' : 'out-of-stock'}">
+                            ${item.badge ? `<div class="badge">${item.badge}</div>` : ''}
+                            <img src="${item.image}" alt="${item.nama}" style="${item.tersedia ? '' : 'filter: grayscale(1); opacity: 0.6;'}">
+                            <div class="product-info-card">
+                                <h3>${item.nama}</h3>
+                                <p class="price">Rp ${item.harga.toLocaleString()}</p>
+                                ${tombolBeli}
+                            </div>
+                        </div>
+                    `;
+                });
+            };
+
+            // ---- CART FUNCTIONS ----
+            window.tambahKeKeranjangOtomatis = function (nama, harga, gambar, jumlah) {
+                const existingItem = cart.find(item => item.name === nama);
+                if (existingItem) {
+                    existingItem.quantity += jumlah;
+                } else {
+                    cart.push({ name: nama, price: harga, quantity: jumlah, image: gambar });
+                }
+                updateCartUI();
+                showToast();
+            };
+
+            window.showToast = function () {
+                const toast = document.getElementById('toastNotification');
+                toast.style.display = 'block';
+                setTimeout(() => { toast.style.display = 'none'; }, 2000);
+            };
+
+            window.hapusSatuItem = function (index) {
+                cart.splice(index, 1);
+                updateCartUI();
+            };
+
+            function updateCartUI() {
+                cartItemsContainer.innerHTML = '';
+                let totalHarga = 0;
+                let totalBarang = 0;
+
+                cart.forEach((item, index) => {
+                    totalHarga += item.price * item.quantity;
+                    totalBarang += item.quantity;
+
+                    cartItemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <img src="${item.image}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;">
+                            <div style="flex:1;">
+                                <h4 style="margin:0; font-size:0.9rem;">${item.name}</h4>
+                                <small>${item.quantity}x Rp ${item.price.toLocaleString()}</small>
+                            </div>
+                            <button onclick="hapusSatuItem(${index})" style="background:none; border:none; color:#ff4757; cursor:pointer;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p class="empty-msg" style="text-align:center; padding:20px; opacity:0.6;">Keranjang masih kosong nih...</p>';
+                }
+
+                cartTotalElement.innerText = `Rp ${totalHarga.toLocaleString()}`;
+                cartBadge.innerText = totalBarang;
+
+                if (totalBarang > 0) {
+                    const cartIcon = document.querySelector('.cart-btn');
+                    cartIcon.classList.add('cart-bounce');
+                    setTimeout(() => cartIcon.classList.remove('cart-bounce'), 300);
+                }
+
+                localStorage.setItem('keranjangKu', JSON.stringify(cart));
+
+                fetch("http://localhost:5000/cart", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    },
+                    body: JSON.stringify({ userId, items: cart })
+                }).catch(err => console.error(err));
+            }
+
+            // ---- PAYMENT OPTIONS ----
+            function updatePaymentOptions(isDelivery) {
+                paymentMethod.innerHTML = isDelivery
+                    ? `<option value="Tunai">Bayar di Tempat (COD)</option>
+                       <option value="Transfer">Transfer Bank</option>
+                       <option value="QRIS">QRIS</option>
+                       <option value="OVO">OVO</option>
+                       <option value="GoPay">GoPay</option>
+                       <option value="Dana">Dana</option>`
+                    : `<option value="Transfer">Transfer Bank</option>
+                       <option value="QRIS">QRIS</option>
+                       <option value="OVO">OVO</option>
+                       <option value="GoPay">GoPay</option>
+                       <option value="Dana">Dana</option>`;
+            }
 
             window.toggleAlamat = function (show) {
                 const wrapper = document.getElementById('wrapperAlamat');
                 const inputAlamat = document.getElementById('customerAddress');
-
+                wrapper.style.display = show ? 'block' : 'none';
+                inputAlamat.value = "";
+                updatePaymentOptions(show);
                 if (show) {
-                    wrapper.style.display = 'block';
+                    setTimeout(() => { inputAlamat.focus(); inputAlamat.blur(); }, 50);
+                }
+            };
 
-                    inputAlamat.value = "";
-                    inputAlamat.placeholder = "Alamat Lengkap (Jl, No Rumah, Kelurahan)";
+            // ---- CHECKOUT ----
+            document.querySelector('.checkout-btn').addEventListener('click', function () {
+                if (cart.length === 0) { alert("Keranjang masih kosong!"); return; }
 
-                    setTimeout(() => {
-                        inputAlamat.focus();
-                        inputAlamat.blur();
-                    }, 50);
-                } else {
-                    wrapper.style.display = 'none';
-                    inputAlamat.value = "";
+                const nama = document.getElementById('customerName').value;
+                const metodePengiriman = document.querySelector('input[name="metode"]:checked').value;
+                const alamatInput = document.getElementById('customerAddress').value;
+                const metodeBayar = document.getElementById('paymentMethod').value;
+                const alamatFinal = (metodePengiriman === "Makan di Tempat") ? "Makan di Sini" : alamatInput;
+
+                if (!nama) { alert("Nama wajib diisi!"); return; }
+                if (metodePengiriman === "Delivery" && !alamatInput) { alert("Mohon isi alamat untuk pengiriman!"); return; }
+
+                const dataPesanan = {
+                    customer: nama,
+                    address: alamatFinal,
+                    payment: metodeBayar,
+                    items: cart,
+                    total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+                };
+
+                this.innerText = "Memproses Pesanan...";
+                this.disabled = true;
+
+                fetch("http://localhost:5000/orders", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem("token")
+                    },
+                    body: JSON.stringify(dataPesanan)
+                })
+                    .then(res => res.json())
+                    .then(() => {
+                        const nomorWA = "6285758914087";
+                        const pesanWA = `*PESANAN BARU (BurgerQu)*\n\n` +
+                            `Nama: ${nama}\n` +
+                            `Alamat: ${alamatFinal}\n` +
+                            `Metode: ${metodePengiriman}\n\n` +
+                            `Detail Pesanan:\n${dataPesanan.items}\n\n` +
+                            `*Total: Rp ${dataPesanan.total.toLocaleString()}*`;
+
+                        window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanWA)}`, '_blank');
+
+                        cart = [];
+                        updateCartUI();
+                        document.getElementById('customerName').value = '';
+                        document.getElementById('customerAddress').value = '';
+                        alert("Pesanan berhasil!");
+                        tampilkanRiwayat();
+                        this.innerText = "Lanjut Bayar";
+                        this.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert("Gagal kirim ke server!");
+                        this.innerText = "Lanjut Bayar";
+                        this.disabled = false;
+                    });
+            });
+
+            // ---- RIWAYAT ----
+            async function tampilkanRiwayat() {
+                const daftarRiwayat = document.getElementById('daftarRiwayat');
+                try {
+                    const res = await fetch("http://localhost:5000/orders", {
+                        headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+                    });
+                    const data = await res.json();
+
+                    if (!data.length) {
+                        daftarRiwayat.innerHTML = `<p class="empty-history">Belum ada pesanan terbaru.</p>`;
+                        return;
+                    }
+
+                    daftarRiwayat.innerHTML = "";
+                    data.reverse().forEach(order => {
+                        daftarRiwayat.innerHTML += `
+                            <div class="history-card">
+                                <div class="history-header">
+                                    <h4>${order.customer}</h4>
+                                    <span>Rp ${order.total.toLocaleString()}</span>
+                                </div>
+                                <div class="history-menu">
+                                    ${order.items.map(item => `<p>${item.name} (${item.quantity}x)</p>`).join("")}
+                                </div>
+                                <div class="history-footer">
+                                    <small>${order.items.length} item</small>
+                                    <small>${new Date(order.createdAt).toLocaleDateString("id-ID")}</small>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } catch (err) {
+                    console.error(err);
                 }
             }
-        </script>
 
-        <script>
-            document.getElementById('btnLogout').addEventListener('click', (e) => {
+            // ---- FILTER MENU ----
+            window.filterMenu = function (category) {
+                displayTitle.innerText = "Menu " + category.charAt(0).toUpperCase() + category.slice(1);
+                tampilkanMenu(semuaData.filter(item => item.kategori === category));
+                displayTitle.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            // ---- SIDEBAR CONTROLS ----
+            const openNav = () => { navSidebar.classList.add('active'); overlay.style.display = 'block'; tampilkanRiwayat(); };
+            const openCart = () => { cartSidebar.classList.add('active'); overlay.style.display = 'block'; };
+            const tutupSemua = () => {
+                navSidebar.classList.remove('active');
+                cartSidebar.classList.remove('active');
+                overlay.style.display = 'none';
+            };
+
+            document.querySelector('.hamburger-btn').addEventListener('click', openNav);
+            document.querySelector('.cart-btn').addEventListener('click', (e) => { e.preventDefault(); openCart(); });
+            document.getElementById('closeNav').addEventListener('click', tutupSemua);
+            document.getElementById('closeSidebar').addEventListener('click', tutupSemua);
+            overlay.addEventListener('click', tutupSemua);
+
+            // ---- SEARCH ----
+            const btnCari = document.getElementById('btnCari');
+            const inputPencarian = document.getElementById('inputPencarian');
+
+            btnCari.addEventListener('click', (e) => {
                 e.preventDefault();
-
-                if (!confirm("Apakah Anda yakin ingin keluar?")) return;
-
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-
-                window.location.href = "auth.html";
+                const isHidden = inputPencarian.style.display === 'none' || inputPencarian.style.display === '';
+                if (isHidden) {
+                    inputPencarian.style.display = 'inline-block';
+                    inputPencarian.focus();
+                } else {
+                    inputPencarian.style.display = 'none';
+                    inputPencarian.value = '';
+                    tampilkanMenu(semuaData);
+                    displayTitle.innerText = 'Semua Menu';
+                }
             });
-        </script>
 
-        <div id="toastNotification" class="toast">Berhasil ditambahkan ke keranjang!</div>
+            inputPencarian.addEventListener('input', function () {
+                const keyword = this.value.toLowerCase().trim();
+                const hasilCari = semuaData.filter(item =>
+                    (item.nama || "").toLowerCase().includes(keyword) ||
+                    (item.desc || "").toLowerCase().includes(keyword)
+                );
+                displayTitle.innerText = keyword ? `Mencari: "${keyword}"` : "Semua Menu";
+                tampilkanMenu(hasilCari);
+                if (keyword.length > 0) displayTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
 
+            // ---- FETCH MENU ----
+            fetch("http://localhost:5000/menu")
+                .then(res => res.json())
+                .then(data => {
+                    semuaData = data.map((item, index) => ({
+                        id: index,
+                        nama: item.name,
+                        harga: item.price,
+                        kategori: item.kategori,
+                        badge: "DB",
+                        image: item.image,
+                        desc: "Data dari MongoDB",
+                        tersedia: true
+                    }));
+                    tampilkanMenu(semuaData);
+                })
+                .catch(err => console.error(err));
 
-        <div id="item-detail-modal" class="modal">
-            <div class="modal-container">
-                <button class="close-icon" id="closeModal">
-                    <i class="fa-regular fa-xmark"></i>
-                </button>
-                <div class="modal-content">
-                    <img src="" id="modal-img" alt="Product Image">
-                    <div class="product-info">
-                        <h3 id="modal-name">Nama Produk</h3>
-                        <p id="modal-desc">Deskripsi produk akan muncul disini.</p>
-                        <div class="modal-price" id="modal-price">IDR 0</div>
+            // Init
+            updateCartUI();
+            updatePaymentOptions(false);
+            tampilkanRiwayat();
+        });
+    </script>
 
-                        <div class="modal-qty-control">
-                            <button type="button" class="btn-qty" id="modal-minus">-</button>
-                            <input type="text" value="1" id="modal-qty-input" readonly>
-                            <button type="button" class="btn-qty" id="modal-plus">+</button>
-                        </div>
-                        <button class="modal-add-btn" id="modalAddToCartBtn">
-                            <i class="fas fa-shopping-cart"></i> Tambahkan ke keranjang
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <script>
+        document.getElementById('btnLogout').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!confirm("Apakah Anda yakin ingin keluar?")) return;
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = "auth.html";
+        });
+    </script>
+
 </body>
 
 </html>
